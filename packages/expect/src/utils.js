@@ -89,12 +89,12 @@ export const getObjectSubset = (object: Object, subset: Object) => {
     typeof subset === 'object' &&
     subset !== null
   ) {
-    const trimmed = {};
-    Object.keys(subset)
-      .filter(key => hasOwnProperty(object, key))
-      .forEach(
-        key => (trimmed[key] = getObjectSubset(object[key], subset[key])),
-      );
+    const trimmed = Object.keys(subset).reduce((acc, next) => {
+      if (hasOwnProperty(object, next)) {
+        acc[next] = getObjectSubset(object[next], subset[next]);
+      }
+      return acc;
+    }, {});
 
     if (Object.keys(trimmed).length > 0) {
       return trimmed;
