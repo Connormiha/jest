@@ -109,7 +109,7 @@ FUNCTIONS.mock = args => {
       if (!found) {
         invariant(
           (scope.hasGlobal(name) && WHITELISTED_IDENTIFIERS[name]) ||
-            /^mock/.test(name) ||
+            name.startsWith('mock') ||
             // Allow istanbul's coverage variable to pass.
             /^(?:__)?cov/.test(name),
           'The module factory of `jest.mock()` is not allowed to ' +
