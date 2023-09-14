@@ -12,9 +12,17 @@ export interface ShardPair {
 export const parseShardPair = (pair: string): ShardPair => {
   const shardPair = pair
     .split('/')
-    .filter(d => /^\d+$/.test(d))
-    .map(d => parseInt(d, 10))
-    .filter(shard => !Number.isNaN(shard));
+    .reduce<number[]>((acc, d) => {
+      if (!/^\d+$/.test(d)) return acc;
+
+      const shard = parseInt(d, 10);
+
+      if (!Number.isNaN(shard)) {
+        acc.push(shard);
+      }
+
+      return acc;
+    }, []);
 
   const [shardIndex, shardCount] = shardPair;
 
